@@ -28,5 +28,5 @@ ALGraph* CreateALGraph(char *content);
 void AddArcToALGraph(ALGraph *g,char head,char tail);
 
 //找到关节点
-char* FindArticul(ALGraph *g);
+void FindArticul(ALGraph *g);
 #endif

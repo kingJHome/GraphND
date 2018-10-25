@@ -84,6 +84,53 @@ void AddArcToALGraph(ALGraph *g,char head,char tail){
 	addArc(g->vertices,tailpos,headpos);
 }
 
+//访问图，并寻找关结点
+void DFSArticul(ALGraph *g,int v,int *ct,int *min,int *visited){
+	*ct += 1;
+	int minl = *ct;
+	visited[v] = *ct;
+
+	for(ArcLink *p = g->vertices[v].firstarc; p; p = p->nextarc){
+		if( !visited[p->adjvex] ){
+			DFSArticul(g,p->adjvex,ct,min,visited);
+			if( min[p->adjvex] < minl ){
+				minl = min[p->adjvex];
+			}
+			if( min[p->adjvex] >= visited[v] ){
+				printf("%c ", g->vertices[v].data);
+			}
+		}else if( visited[p->adjvex] < minl){
+			minl = visited[p->adjvex];
+		}
+	}
+
+	min[v] = minl;
+}
+
 //找到关节点
-char* FindArticul(ALGraph *g){
+void FindArticul(ALGraph *g){
+	if( g && g->vexnum ){
+		int vt,
+			count = 1,
+			min[g->vexnum],
+			visited[g->vexnum];
+		ArcLink *p = g->vertices[0].firstarc;
+		vt = p->adjvex;
+	
+		visited[0] = 1;
+		for(int i = 1; i < g->vexnum; ++i){
+			visited[i] = 0;
+		}
+		DFSArticul(g,vt,&count,min,visited);
+		if(count < g->vexnum){
+			printf("%c ", g->vertices[0].data);
+			while(p->nextarc){
+				p = p->nextarc;
+				vt = p->adjvex;
+				if( !visited[vt] ){
+					DFSArticul(g,vt,&count,min,visited);
+				}
+			}
+		}
+	}
 }

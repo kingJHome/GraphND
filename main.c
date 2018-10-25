@@ -6,7 +6,7 @@ int main(int argc,char *argv[]){
 	FILE *fp = fopen("graph.txt","r");
 
 	if( fp ){
-		char head,tail,*articuls = NULL;
+		char head,tail;
 		ALGraph *algra = NULL;
 		char content[100];
 
@@ -26,12 +26,8 @@ int main(int argc,char *argv[]){
 		}
 		
 		fclose(fp);
-		articuls = FindArticul(algra);
-		if( articuls ){
-			printf("%s\n", articuls);
-		}else{
-			printf("there is no articuls\n");
-		}
+		FindArticul(algra);
+		printf("\n");
 	}
 
 	return 0;
